@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "password"
+      GF_DEFAULT_APP_MODE: "development"
+
+  azure-cli:
+    build:
+      context: ./architecture
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    container_name: azure-cli
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./architecture:/home
